@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.tutuka.transactioncompare</groupId>
+		<artifactId>tutuka-TransactionCompare</artifactId>
+		<version>1.0</version>
+	</parent>
+	<groupId>com.tutuka.transactioncompare.service</groupId>
+	<artifactId>TransactionCompare-service</artifactId>
+	<version>1.0</version>
+	<name>TransactionCompare-service</name>
+	<url>http://maven.apache.org</url>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.tutuka.transactioncompare.util</groupId>
+			<artifactId>TransactionCompare-util</artifactId>
+			<version>1.0</version>
+		</dependency>
+	</dependencies>
+
+</project>

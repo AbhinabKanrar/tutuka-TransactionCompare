@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Transaction Compare</title>
+<link rel="stylesheet" href="css/w3.css" />
+</head>
+<body>
+	<div class="w3-row w3-border w3-padding-16">
+		<form th:action="@{/}" method="post" class="w3-container"
+			enctype="multipart/form-data" th:object="${fileLoader}"
+			autocomplete="off">
+			<div class="w3-row w3-section">
+				<p>Specify files to compare</p>
+			</div>
+			<div class="w3-row w3-section">
+				<th:block th:each="error : ${errors}">
+					<p class="w3-pale-red" th:text="${error}" />
+				</th:block>
+				<p class="w3-pale-red" th:text="${error}" />
+			</div>
+			<div class="w3-row w3-section">
+				<div class="w3-third w3-container">Select file 1</div>
+				<div class="w3-third w3-container">
+					<input class="w3-input" type="file" th:field="*{fileOne}"
+						name="username" required="required" accept=".csv" />
+				</div>
+			</div>
+			<div class="w3-row w3-section">
+				<div class="w3-third w3-container">Select file 2</div>
+				<div class="w3-third w3-container">
+					<input class="w3-input" type="file" th:field="*{fileTwo}"
+						name="username" required="required" accept=".csv" />
+				</div>
+				<div class="w3-third w3-container">
+					<button type="submit" class="w3-btn w3-blue" name="action"
+						value="Compare">Compare</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div th:if="${showCounter} == true"
+		class="w3-row w3-border w3-padding-16">
+		<div class="w3-row w3-section">
+			<p>Comparison Result</p>
+		</div>
+		<div class="w3-row w3-section">
+			<div class="w3-half w3-border w3-padding-8 w3-container">
+				<div class="w3-row">
+					<div class="w3-half w3-large w3-wide"
+						th:text="|${FILE_ONE.fileName}"></div>
+				</div>
+				<div class="w3-row">
+					<div class="w3-half">Total Records</div>
+					<div class="w3-half" th:text="|${FILE_ONE.totalRecordsCount}"></div>
+				</div>
+				<div class="w3-row">
+					<div class="w3-half">Matching Records</div>
+					<div class="w3-half"
+						th:text="|${FILE_ONE.totalMatchedRecordsCount}"></div>
+				</div>
+				<div class="w3-row">
+					<div class="w3-half">Unmatched Records</div>
+					<div class="w3-half"
+						th:text="|${FILE_ONE.totalUnmatchedRecordsCount}"></div>
+				</div>
+			</div>
+			<div class="w3-half w3-border w3-padding-8 w3-container">
+				<div class="w3-row">
+					<div class="w3-half w3-large w3-wide"
+						th:text="|${FILE_TWO.fileName}"></div>
+				</div>
+				<div class="w3-row">
+					<div class="w3-half">Total Records</div>
+					<div class="w3-half" th:text="|${FILE_TWO.totalRecordsCount}"></div>
+				</div>
+				<div class="w3-row">
+					<div class="w3-half">Matching Records</div>
+					<div class="w3-half"
+						th:text="|${FILE_TWO.totalMatchedRecordsCount}"></div>
+				</div>
+				<div class="w3-row">
+					<div class="w3-half">Unmatched Records</div>
+					<div class="w3-half"
+						th:text="|${FILE_TWO.totalUnmatchedRecordsCount}"></div>
+				</div>
+			</div>
+		</div>
+		<div class="w3-row w3-section">
+			<div class="w3-center w3-container">
+				<button id="btnReport" class="w3-btn w3-blue">Unmatched
+					Report</button>
+			</div>
+		</div>
+	</div>
+	<div th:if="${showCounter} == true"
+		class="w3-row w3-border w3-padding-16" id="report">
+		<div class="w3-row w3-section">
+			<p>Unmatched Report</p>
+		</div>
+		<div class="w3-row w3-section">
+			<div class="w3-half w3-responsive">
+				<div class="w3-wide" th:text="|${FILE_ONE.fileName}"></div>
+				<div>
+					<table id="responseCodeTable" class="w3-table-all w3-centered">
+						<thead>
+							<tr class="w3-light-grey">
+								<th>Date</th>
+								<th>Reference</th>
+								<th>Amount</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="transaction : ${FILE_ONE.unMatchedTransactions}">
+								<td th:text="${transaction.transactionDate}"></td>
+								<td th:text="${transaction.walletReference}"></td>
+								<td th:text="${transaction.transactionAmount}"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="w3-half w3-responsive">
+				<div class="w3-wide" th:text="|${FILE_TWO.fileName}"></div>
+				<div>
+					<table id="responseCodeTable" class="w3-table-all w3-centered">
+						<thead>
+							<tr class="w3-light-grey">
+								<th>Date</th>
+								<th>Reference</th>
+								<th>Amount</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="transaction : ${FILE_TWO.unMatchedTransactions}">
+								<td th:text="${transaction.transactionDate}"></td>
+								<td th:text="${transaction.walletReference}"></td>
+								<td th:text="${transaction.transactionAmount}"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="js/app.js" />
+</html>

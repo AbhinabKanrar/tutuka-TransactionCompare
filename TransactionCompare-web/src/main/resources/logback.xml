@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration scan="true">
+	<include resource="org/springframework/boot/logging/logback/base.xml" />
+	<jmxConfigurator />
+	<appender name="TUTUKA_UPDATES_APPENDER"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>logs/transactioncomparer/tutuka-transactioncomparer-app.log
+		</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>logs/transactioncomparer/tutuka-transactioncomparer-app.%i.log
+			</fileNamePattern>
+			<minIndex>1</minIndex>
+			<maxIndex>50</maxIndex>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>200MB</maxFileSize>
+		</triggeringPolicy>
+		<encoder>
+			<Pattern>%d %X %-5level %logger{36} - %msg%n%ex</Pattern>
+		</encoder>
+	</appender>
+	<appender name="ASYNC_TUTUKA_UPDATES_APPENDER" class="ch.qos.logback.classic.AsyncAppender">
+		<queueSize>2000</queueSize>
+		<discardingThreshold>0</discardingThreshold>
+		<appender-ref ref="TUTUKA_UPDATES_APPENDER" />
+	</appender>
+	<root level="WARN">
+		<appender-ref ref="ASYNC_TUTUKA_UPDATES_APPENDER" />
+	</root>
+	<logger name="org.springframework" level="WARN" additivity="false">
+		<appender-ref ref="ASYNC_TUTUKA_UPDATES_APPENDER" />
+	</logger>
+	<logger name="org.springframework.web.servlet.DispatcherServlet"
+		level="WARN" additivity="false">
+		<appender-ref ref="ASYNC_TUTUKA_UPDATES_APPENDER" />
+	</logger>
+	<logger
+		name="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"
+		level="WARN" additivity="false">
+		<appender-ref ref="ASYNC_TUTUKA_UPDATES_APPENDER" />
+	</logger>
+	<logger
+		name="org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor"
+		level="WARN" additivity="false">
+		<appender-ref ref="ASYNC_TUTUKA_UPDATES_APPENDER" />
+	</logger>
+	<logger
+		name="org.springframework.integration.ip.tcp.connection.TcpMessageMapper"
+		level="OFF" additivity="false">
+		<appender-ref ref="ASYNC_TUTUKA_UPDATES_APPENDER" />
+	</logger>
+	<logger name="org.springframework.web.client.RestTemplate"
+		level="WARN" additivity="false">
+		<appender-ref ref="ASYNC_TUTUKA_UPDATES_APPENDER" />
+	</logger>
+	<logger name="org.npci.upi" level="WARN" additivity="false">
+		<appender-ref ref="ASYNC_TUTUKA_UPDATES_APPENDER" />
+	</logger>
+</configuration>
